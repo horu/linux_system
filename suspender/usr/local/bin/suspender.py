@@ -31,9 +31,9 @@ def run_shell(cmd: str, line: int = None, print_output=True):
 
 # mem suspend
 def set_power_state():
-    with POWER_STATE_PATH.open('w') as f:
-        print_msg(POWER_STATE)
-        f.write(POWER_STATE)
+    script_dir = pathlib.Path(__file__).parent
+
+    run_shell(str(script_dir / 'mem_susp.sh'))
 
 
 def reset_screens():
@@ -52,7 +52,7 @@ def reset_brightness():
             with (device / 'actual_brightness').open('r') as f:
                 cur_level = int(f.readline())
 
-            limit_level = int(BRIGHTNESS_LIMIT*max_level)
+            limit_level = int(BRIGHTNESS_LIMIT * max_level)
 
             print_msg('br level: max_level {} cur_level {} limit_level {}'.format(max_level, cur_level, limit_level))
             if cur_level > limit_level:
@@ -69,8 +69,6 @@ def reset_brightness():
 
 
 def do_suspend():
-    run_shell('sync')
-
     # suspend
     set_power_state()
 
@@ -79,7 +77,7 @@ def do_suspend():
 
     reset_screens()
     time.sleep(1)
-    
+
     reset_brightness()
     time.sleep(2)
 
