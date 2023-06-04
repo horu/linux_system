@@ -1,0 +1,2 @@
+1. Add command for user autorun: xhost SI:localuser:root
+2. Set immutable files: sudo chattr +i suspender.*
