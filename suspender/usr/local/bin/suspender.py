@@ -1,8 +1,10 @@
 import subprocess
 import pathlib
+import sys
 import time
 import os
 import syslog
+import argparse
 
 SLEEP_TIMEOUT = 10
 
@@ -108,4 +110,11 @@ def loop():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--once', action='store_true')
+    args = parser.parse_args()
+    if args.once:
+        do_suspend()
+        sys.exit(0)
+
     loop()
