@@ -39,6 +39,7 @@ def set_power_state():
 
 
 def reset_screens():
+    time.sleep(1)
     print_msg('fix dual monitor black screen bug')
     os.environ['DISPLAY'] = ':0.0'
     run_shell('xset dpms force off')
@@ -47,6 +48,7 @@ def reset_screens():
 
 
 def reset_brightness():
+    time.sleep(1)
     for device in BRIGHTNESS_PATH.iterdir():
         try:
             with (device / 'max_brightness').open('r') as f:
@@ -70,18 +72,22 @@ def reset_brightness():
             continue
 
 
+def reset_network():
+    run_shell('nmcli networking off')
+    time.sleep(0.3)
+    run_shell('nmcli networking on')
+    time.sleep(1)
+
+
 def do_suspend():
     # suspend
     set_power_state()
 
     # after suspend
-    time.sleep(1)
 
     reset_screens()
-    time.sleep(1)
-
     reset_brightness()
-    time.sleep(2)
+    reset_network()
 
     # reset show actual time
     run_shell('systemctl restart systemd-timesyncd.service')
