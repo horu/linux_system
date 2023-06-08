@@ -79,11 +79,24 @@ def reset_network():
     time.sleep(1)
 
 
+def loginctl(lock: bool):
+    if lock:
+        run_shell('loginctl lock-sessions')
+    else:
+        run_shell('loginctl unlock-sessions')
+    time.sleep(0.8)
+
+
 def do_suspend():
+    # bug: freeze on suspend when a sessions is locked.
+    loginctl(False)
+
     # suspend
     set_power_state()
 
     # after suspend
+
+    loginctl(True)
 
     reset_screens()
     reset_brightness()
