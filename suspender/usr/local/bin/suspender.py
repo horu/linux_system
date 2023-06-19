@@ -100,7 +100,7 @@ def do_suspend():
 
     reset_screens()
     reset_brightness()
-    reset_network()
+    # reset_network()
 
     # reset show actual time
     run_shell('systemctl restart systemd-timesyncd.service')
